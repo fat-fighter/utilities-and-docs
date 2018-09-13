@@ -1,0 +1,57 @@
+#!/bin/bash
+
+user="guggu"
+proxy="bsnlproxy.iitk.ac.in"
+port="3128"
+
+OPTIND=1
+
+stop=false
+reverse=false
+
+while getopts "vu:h:p:" option; do
+	case "${option}" in
+		u)
+			user=$OPTARG
+			;;
+		v)
+			reverse=true
+			;;
+		h)
+			proxy=$OPTARG
+			;;
+		p)
+			port=$OPTARG
+			;;
+		?)
+			(>&2 echo "`
+				echo "Usage: $(basename $0) [-u uname] [-h proxy] [-p port] [-v]"
+				echo ""
+				echo "  -u        Used to specify a username"
+				echo "  -h        Used to specify a proxy server"
+				echo "  -p        Used to specify a port"
+				echo "  -v        Unsets the proxy variables (ignores other options)"
+			`")
+			stop=true
+	esac
+done
+
+if [[ $stop == false ]]; then
+
+	echo ""
+	echo "Username: $user"
+	echo -n "Password: "
+	read -s password
+	echo ""
+
+	address=""
+	if [[ $reverse == false ]]; then
+		address="$user:$password@$proxy:$port"
+	fi
+
+	protocols=( "http" "https" "ftp" )
+
+	for protocol in ${protocols[@]}; do
+		export ${protocol}_proxy="$protocol://$address"
+	done
+fi
