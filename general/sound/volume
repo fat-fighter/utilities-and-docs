@@ -1,0 +1,75 @@
+#! /usr/bin/bash
+
+error() {
+	echo "Usage:"
+	echo "volume get";
+	echo "volume set [+|-]left-volume [right-volume]"
+	echo ""
+	echo "get  -  prints the volume of the active sink"
+	echo "set  -  sets the volume for the active sink"
+	echo ""
+	echo "Note 1: If right-volume is not specified, it is set"
+	echo "        to be the same as left-volume"
+	echo "Note 2: Specifying a sign (+|-) for volume would mean adding"
+	echo "        to the active sink's volume"
+	exit 1;
+}
+
+getactivesink() {
+	pacmd stat | awk -F": " '/^Default sink name: /{print $2}'
+}
+
+getsinkvolume() {
+	vol=(
+		`pacmd list-sinks |
+			awk '/^\s+name: /{indefault = $2 == "<'$(getactivesink)'>"}
+				/^\s+volume: / && indefault {print $0; exit}' | grep -o '[0-9]\+%' | sed 's/%//g'
+		`
+	)
+	echo $(( ( ${vol[0]} + ${vol[1]} ) / 2 ))
+}
+
+parsevolume() {
+	voll=$1
+	if [[ "$voll" =~ ^[+-][0-9]+$ ]]; then
+		voll=$(( $2 + $voll ))
+	elif ! [[ "$voll" =~ ^[0-9]+$ ]]; then
+		error
+	fi
+	voll=$(( $voll > 200 ? 200 : $voll ))
+	voll=$(( $voll < 0   ? 0   : $voll ))
+	echo $voll
+}
+
+setsinkvolume() {
+	sink=$(getactivesink)
+	vol=(
+		`pacmd list-sinks |
+			awk '/^\s+name: /{indefault = $2 == "<'$sink'>"}
+				/^\s+volume: / && indefault {print $0; exit}' | grep -o '[0-9]\+%' | sed 's/%//g'
+		`
+	)
+
+	voll=$(parsevolume $1 ${vol[0]})
+
+	volr=$2
+	if [[ -z $volr ]]; then
+		volr=$1
+	fi
+	volr=$(parsevolume $volr ${vol[1]})
+
+	pactl set-sink-volume $sink $voll% $volr%
+
+	echo "Sink: $sink, Volume: $voll%, $volr%"
+}
+
+if [[ $1 == "get" ]]; then
+	getsinkvolume
+elif [[ $1 == "set" ]]; then
+	if [[ $# != 2 && $# != 3 ]]; then
+		error
+	fi
+	setsinkvolume $2 $3
+else
+	error
+fi
