@@ -26,7 +26,9 @@ getsinkvolume() {
 				/^\s+volume: / && indefault {print $0; exit}' | grep -o '[0-9]\+%' | sed 's/%//g'
 		`
 	)
-	echo $(( ( ${vol[0]} + ${vol[1]} ) / 2 ))
+	len=${#vol[@]}
+	vol=$( echo "${vol[@]}" | tr ' ' '+' )
+	echo $(( ($vol) / $len ))
 }
 
 parsevolume() {
