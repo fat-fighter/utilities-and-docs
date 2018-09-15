@@ -38,20 +38,25 @@ done
 
 if [[ $stop == false ]]; then
 
-	echo ""
-	echo "Username: $user"
-	echo -n "Password: "
-	read -s password
-	echo ""
-
-	address=""
-	if [[ $reverse == false ]]; then
-		address="$user:$password@$proxy:$port"
-	fi
-
 	protocols=( "http" "https" "ftp" )
 
-	for protocol in ${protocols[@]}; do
-		export ${protocol}_proxy="$protocol://$address"
-	done
+	if [[ ${reverse} == false ]]; then
+		echo ""
+		echo "Username: $user"
+		echo -n "Password: "
+		read -s password
+		echo ""
+
+		address="$user:$password@$proxy:$port"
+
+		for protocol in ${protocols[@]}; do
+			export ${protocol}_proxy="${protocol}://${address}"
+			git config --global ${protocol}.proxy ${address}
+		done
+	else
+		for protocol in ${protocols[@]}; do
+			export ${protocol}_proxy=""
+			git config --global --unset ${protocol}.proxy
+		done
+	fi
 fi
