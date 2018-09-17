@@ -1,23 +1,29 @@
 #! /usr/bin/python2
 
 import re
+import os
 import sys
 
 def read_file(path):
     try:
         with open(path, "r") as f:
-            return f.read()
+            return f.read(), os.path.dirname(os.path.abspath(path))
     except IOError:
         print "%s: Either file is missing or cannot be read" % path
+        exit(1)
 
 def translate_command(var, mapping):
-    return "" if var not in mapping else mapping[var]
+    if var not in mapping:
+        print "Warning: mapping for %s not found" % var
+        return ""
+    else:
+        return mapping[var]
 
 def parse_translations(path):
     try:
-        text = read_file(path)
-
+        text, dir = read_file(path)
         text = text.split("\n")
+
         mappings = []
         for line in text:
             if line.strip() == "":
@@ -26,7 +32,7 @@ def parse_translations(path):
             var, translation = map(lambda x: x.strip(), line.split("="))
 
             if var == "load":
-                mappings += parse_translations(path + "/" + translation)
+                mappings += parse_translations(dir + "/" + translation)
             else:
                 mappings += [(var, translation)]
     except ValueError:
@@ -44,7 +50,7 @@ def main():
         print "Usage: %s <raw-file> <translations-file>" % sys.argv[0]
         exit(1)
 
-    raw_text = read_file(args[1])
+    raw_text = read_file(args[1])[0]
     var_mappings = dict(parse_translations(args[2]))
 
     parsed_text = re.sub(r'{{(.*?)}}', lambda m: translate_command(m.group(1), var_mappings), raw_text)
