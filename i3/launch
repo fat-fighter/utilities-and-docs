@@ -15,7 +15,7 @@ setxkbmap -option 'numpad:microsoft'
 # pnmixer &
 
 # Run blueman
-blueman &
+blueman-applet &
 
 # Run NetworkManager Applet
 nm-applet &
