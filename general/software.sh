@@ -1,22 +1,27 @@
 #!/usr/bin/bash
 
 software=(
-	git:google-chrome
-	git:dropbox
-	git:light
 	fzf
 	w3m
+	feh
 	wget
-	unzip
-	screen
+	term
 	file
-	highlight
-	mediainfo
-	nitrogen
+	unzip
+	atool
+	screen
+	evince
 	poppler
+	nitrogen
+	nautilus
+	highlight
+	git:light
+	mediainfo
 	pavucontrol
+	git:dropbox
 	lxappearance
 	arc-gtk-theme
+	git:google-chrome
 	xf86-input-libinput
 )
 
