@@ -9,4 +9,5 @@ config:
 	echo "load-module module-switch-on-connect" >> temp
 	sudo mv temp /etc/pulse/default.pa
 	sudo systemctl enable bluetooth.service
-	killall -q pulseaudio
+	pulseaudio -k
+	sudo cp policy-rule /etc/polkit-1/rules.d/network.rules

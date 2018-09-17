@@ -8,3 +8,4 @@ install:
 
 config: ${source_config}
 	config-parse ${source_config} ${source_mappings} > ${dest_config}
+	ln ../.gitignore ~/
