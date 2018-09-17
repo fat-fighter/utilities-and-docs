@@ -12,7 +12,7 @@ cd ..
 rm -rf asoundconf
 
 # Setting default card to PCH
-rm ~/.asoundrc
+rm -rf ~/.asoundrc
 asoundconf set-default-card PCH
 
 echo "defaults.ctl.card PCH" >> ~/.asoundrc

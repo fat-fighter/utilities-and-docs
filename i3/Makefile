@@ -6,7 +6,7 @@ dest_file_config=config
 dest_file_launch=launch
 
 install:
-	sudo pacman -S --confirm i3 i3-gaps
+	sudo pacman -S --noconfirm i3 i3-gaps
 
 config: ${source_config} ${source_mappings}
 	config-parse ${source_config} ${source_mappings} > .out
