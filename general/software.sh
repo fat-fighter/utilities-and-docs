@@ -19,6 +19,7 @@ software=(
 	mediainfo
 	pavucontrol
 	git:dropbox
+	git:lazygit
 	lxappearance
 	arc-gtk-theme
 	git:google-chrome

@@ -6,10 +6,8 @@ dest_file_config=config
 
 install:
 	git clone https://aur.archlinux.org/polybar.git
-	cd polybar
-	makepkg -Acs --noconfirm
-	sudo pacman -U --noconfirm polybar*.tar.xz
-	cd ../
+	cd polybar; makepkg -Acs --noconfirm
+	sudo pacman -U --noconfirm polybar/polybar*.tar.xz
 	rm -rf polybar
 
 config: ${source_config} ${source_mappings}
