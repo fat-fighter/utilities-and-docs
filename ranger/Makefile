@@ -8,9 +8,10 @@ dest_name_rifle_config=rifle.conf
 
 install:
 	git clone https://aur.archlinux.org/ranger-git.git
-	cd ranger-git; makepkg -Acs --noconfirm
+	cd ranger-git; sed -i 's/python setup/python2 setup/g' PKGBUILD; makepkg -Acs --noconfirm
 	sudo pacman -U --noconfirm ranger-git/ranger*.tar.xz
 	rm -rf ranger-git
+	sudo sed -i 's/#\!\/bin\/python -O/#!\/bin\/python2/g' /usr/bin/ranger
 
 config: ${source_config} ${source_rconf_config}
 	mkdir -p ${dest_path}
