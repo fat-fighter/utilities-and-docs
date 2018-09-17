@@ -5,12 +5,12 @@ dest_path=~/.config/i3
 dest_file_config=config
 dest_file_launch=launch
 
-all: ${source_config} ${source_mappings}
-	config-parse ${source_config} ${source_mappings} > .out
+install:
+	sudo pacman -S --confirm i3 i3-gaps
 
-install: .out
+config: ${source_config} ${source_mappings}
+	config-parse ${source_config} ${source_mappings} > .out
 	mkdir -p ${dest_path}
-	rm -rf ${dest_path}/${dest_file_config}
 	mv .out ${dest_path}/${dest_file_config}
 	
 	rm -rf ${dest_path}/${dest_file_launch}
