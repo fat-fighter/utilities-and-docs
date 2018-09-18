@@ -1,0 +1,6 @@
+#! /usr/bin/bash
+
+git clone https://github.com/fat-fighter/iitk-courses.git $HOME/iitk
+ln -s $HOME/.extra/Dropbox $HOME/dropbox
+rm -r $HOME/dropbox/iitk
+ln -s $HOME/iitk/sem7 $HOME/dropbox/iitk

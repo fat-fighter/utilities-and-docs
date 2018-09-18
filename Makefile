@@ -1,2 +1,2 @@
 install:
-	install -t /usr/bin/ config-parse
+	sudo install -t /usr/bin/ config-parse
