@@ -3,6 +3,7 @@
 software=(
 	fzf
 	w3m
+	exa
 	feh
 	wget
 	term
@@ -22,7 +23,6 @@ software=(
 	git:lazygit
 	lxappearance
 	arc-gtk-theme
-	git:google-chrome
 	xf86-input-libinput
 )
 
