@@ -1,5 +1,5 @@
 install:
-	sudo pacman -S pulseaudio-bluetooth blueman
+	sudo pacman -S --noconfirm pulseaudio-bluetooth blueman
 	sudo systemctl start bluetooth.service
 
 config:
@@ -9,5 +9,4 @@ config:
 	echo "load-module module-switch-on-connect" >> temp
 	sudo mv temp /etc/pulse/default.pa
 	sudo systemctl enable bluetooth.service
-	pulseaudio -k
 	sudo cp policy-rule /etc/polkit-1/rules.d/network.rules

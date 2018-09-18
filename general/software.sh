@@ -41,12 +41,9 @@ function pg {
 }
 
 for sw in ${software[@]}; do
-	echo $sw
 	if [[ `echo $sw | cut -d':' -f1` == "git" ]]; then
-		echo $sw | cut -d':' -f2
 		pg `echo $sw | cut -d':' -f2`
 	else
-		echo $sw
-		#sudo pacman -S --noconfirm $sw
+		sudo pacman -S --noconfirm $sw
 	fi
 done
