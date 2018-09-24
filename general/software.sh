@@ -1,7 +1,6 @@
 #!/usr/bin/bash
 
 software=(
-	fzf
 	w3m
 	exa
 	feh
@@ -23,6 +22,7 @@ software=(
 	git:lazygit
 	lxappearance
 	arc-gtk-theme
+	gnome-screenshot
 	xf86-input-libinput
 )
 

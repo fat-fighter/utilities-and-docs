@@ -4,9 +4,11 @@ error() {
 	echo "Usage:"
 	echo "volume get";
 	echo "volume set [+|-]left-volume [right-volume]"
+	echo "volume mute"
 	echo ""
 	echo "get  -  prints the volume of the active sink"
 	echo "set  -  sets the volume for the active sink"
+	echo "set  -  toggles mute for the active sink"
 	echo ""
 	echo "Note 1: If right-volume is not specified, it is set"
 	echo "        to be the same as left-volume"
@@ -19,6 +21,27 @@ getactivesink() {
 	pacmd stat | awk -F": " '/^Default sink name: /{print $2}'
 }
 
+getsinkvolumesymbol() {
+	sink=$(getactivesink)
+	muted=(
+		`pacmd list-sinks |
+			awk '/^\s+name: /{activesink = $2 == "<'$sink'>"}
+				/^\s+muted: / && activesink {print $2; exit}'
+		`
+	)
+	if [[ $muted == "no" ]]; then
+		if [[ $1 < 20 ]]; then
+			echo 
+		elif [[ $1 < 60 ]]; then
+			echo 
+		else
+			echo 
+		fi
+	else
+		echo 
+	fi
+}
+
 getsinkvolume() {
 	vol=(
 		`pacmd list-sinks |
@@ -28,7 +51,12 @@ getsinkvolume() {
 	)
 	len=${#vol[@]}
 	vol=$( echo "${vol[@]}" | tr ' ' '+' )
-	echo $(( ($vol) / $len ))
+	vol=$(( ($vol) / $len ))
+	echo "$(getsinkvolumesymbol $vol) $vol"
+}
+
+togglesinkmute() {
+	pactl set-sink-mute $(getactivesink) toggle
 }
 
 parsevolume() {
@@ -66,12 +94,20 @@ setsinkvolume() {
 }
 
 if [[ $1 == "get" ]]; then
+	if [[ $# != 1 ]]; then
+		error
+	fi
 	getsinkvolume
 elif [[ $1 == "set" ]]; then
 	if [[ $# != 2 && $# != 3 ]]; then
 		error
 	fi
 	setsinkvolume $2 $3
+elif [[ $1 == "mute" ]]; then
+	if [[ $# != 1 ]]; then
+		error
+	fi
+	togglesinkmute
 else
 	error
 fi
