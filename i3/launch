@@ -17,9 +17,6 @@ setxkbmap -option 'numpad:microsoft'
 # Run blueman
 blueman-applet &
 
-# Run NetworkManager Applet
-nm-applet &
-
 # Kill all instances of compton and polybar
 killall -q polybar compton
 

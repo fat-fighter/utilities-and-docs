@@ -2,3 +2,4 @@ install:
 	mkdir -p ~/.fonts
 	cp -r fonts/* ~/.fonts
 	fc-cache -fv
+	sudo install -t /usr/bin awesome-icons
