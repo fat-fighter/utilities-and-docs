@@ -10,9 +10,10 @@ while getopts "vh:p:" option; do
 done
 
 id=$( xinput list | egrep "slave.*pointer" | grep -v XTEST | sed -e 's/^.*id=//' -e 's/\s.*$//' )
+prop=$( xinput list-props $id | grep "Natural Scrolling Enabled" | grep -v "Default" | sed "s/.*(\([0-9]*\)).*/\1/g" )
 
 if [[ $reverse == true ]]; then
-	xinput --set-prop $id 288 0
+	xinput --set-prop $id $prop 0
 else
-	xinput --set-prop $id 288 1
+	xinput --set-prop $id $prop 1
 fi

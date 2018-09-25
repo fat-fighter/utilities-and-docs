@@ -11,9 +11,6 @@ $HOME/utilities/general/touchpad/disabled-while-typing.sh -v
 # Make numpad like in Microsoft
 setxkbmap -option 'numpad:microsoft'
 
-# Run pnMixer
-# pnmixer &
-
 # Run blueman
 blueman-applet &
 
@@ -33,9 +30,6 @@ if type "xrandr"; then
 else
 	polybar bot &
 fi
-
-# Restart dropbox
-dropbox stop; dropbox start
 
 # Wait for 5 seconds before starting compton
 sleep 5
