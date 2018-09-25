@@ -20,4 +20,5 @@ Identity = $uname
 Passphrase = $upass
 END
 
+connmanctl connect $cnid
 echo ""
