@@ -25,10 +25,10 @@ done
 if type "xrandr"; then
 	# Running for all monitors
 	for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-		MONITOR=$m polybar bot &
+		MONITOR=$m polybar default &
 	done
 else
-	polybar bot &
+	polybar default &
 fi
 
 # Wait for 5 seconds before starting compton
