@@ -5,6 +5,7 @@ software=(
 	exa
 	feh
 	wget
+	xorg
 	term
 	file
 	unzip
@@ -14,16 +15,20 @@ software=(
 	poppler
 	nitrogen
 	nautilus
+	xorg-init
 	xdg-utils
 	highlight
 	git:light
 	mediainfo
+	xf86-video
 	pavucontrol
+	xorg-server
 	git:dropbox
 	git:lazygit
 	lxappearance
 	arc-gtk-theme
 	gnome-screenshot
+	git:google-chrome
 	xf86-input-libinput
 )
 
@@ -48,3 +53,15 @@ for sw in ${software[@]}; do
 		sudo pacman -S --noconfirm $sw
 	fi
 done
+
+#  Custom Commands
+
+## Dropbox
+sudo systemctl enable dropbox@`whoami`
+
+## Chrome
+xdg-mime default ${desktop_file} x-scheme-handler/http
+xdg-mime default ${desktop_file} x-scheme-handler/https
+
+## Xorg
+echo "exec i3" > ~/.xinitrc
