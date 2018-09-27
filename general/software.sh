@@ -14,6 +14,7 @@ software=(
 	poppler
 	nitrogen
 	nautilus
+	xdg-utils
 	highlight
 	git:light
 	mediainfo

@@ -2,5 +2,7 @@
 
 git clone https://github.com/fat-fighter/iitk-courses.git $HOME/iitk
 ln -s $HOME/.extra/Dropbox $HOME/dropbox
-rm -r $HOME/dropbox/iitk
+rm -rf $HOME/dropbox/iitk
 ln -s $HOME/iitk/sem7 $HOME/dropbox/iitk
+mkdir -p $HOME/downloads
+rm -f $HOME/Downloads
