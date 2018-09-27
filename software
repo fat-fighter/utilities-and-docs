@@ -64,4 +64,8 @@ xdg-mime default ${desktop_file} x-scheme-handler/http
 xdg-mime default ${desktop_file} x-scheme-handler/https
 
 ## Xorg
-echo "exec i3" > ~/.xinitrc
+cat > ~/.xinitrc << EOT
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
+exec i3
+EOT
