@@ -10,7 +10,8 @@ echo -n "Password: "
 read -s upass
 echo ""
 
-sudo tee /var/lib/connman/${cnid}.config > /dev/null << END
+echo ${cnid}
+sudo tee /var/lib/connman/${cnid}.config << END
 [service_peap]
 Type = wifi
 Name = $ssid

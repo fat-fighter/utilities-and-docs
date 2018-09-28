@@ -1,15 +1,15 @@
 #! /bin/bash
 
 # Restoring Desktop Background
-nitrogen --restore
+feh --bg-fill $HOME/dropbox/pictures/wallpaper.jpg &
 
 # Set natural scrolling and Velocity Scaling
-$HOME/utilities/general/touchpad/natural-scrolling.sh
-$HOME/utilities/general/touchpad/tapping.sh
-$HOME/utilities/general/touchpad/disabled-while-typing.sh -v
+$HOME/utilities/general/touchpad/natural-scrolling.sh &
+$HOME/utilities/general/touchpad/tapping.sh &
+$HOME/utilities/general/touchpad/disabled-while-typing.sh -v &
 
 # Make numpad like in Microsoft
-setxkbmap -option 'numpad:microsoft'
+setxkbmap -option 'numpad:microsoft' &
 
 # Run blueman
 blueman-applet &
@@ -39,3 +39,5 @@ while pgrep -x compton >/dev/null; do
 	sleep 1;
 done
 compton --config=$HOME/.config/compton/config &
+
+pulseaudio -D &

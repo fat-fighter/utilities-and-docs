@@ -13,7 +13,6 @@ software=(
 	screen
 	evince
 	poppler
-	nitrogen
 	nautilus
 	xorg-init
 	xdg-utils
@@ -26,6 +25,7 @@ software=(
 	git:dropbox
 	git:lazygit
 	lxappearance
+	pacman-utils
 	arc-gtk-theme
 	gnome-screenshot
 	git:google-chrome
