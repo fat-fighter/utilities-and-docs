@@ -10,3 +10,5 @@ ln -s $HOME/utilities/dotfiles $HOME/dotfiles
 
 mkdir -p $HOME/downloads
 rm -f $HOME/Downloads
+
+mkdir -p $HOME/projects/machine-learning
