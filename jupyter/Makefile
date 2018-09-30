@@ -1,11 +1,11 @@
 source_config=../dotfiles/jupyter/config.raw
 source_scss=../dotfiles/jupyter/scss.raw
-source_nb=../dotfiles/jupyter/nb-extension.raw
+source_nb=../dotfiles/jupyter/nb-extensions.raw
 source_mappings=../dotfiles/jupyter/mappings
 
 dest_path_config=${HOME}/.jupyter/jupyter_notebook_config.py
-dest_dir_css=${HOME}/.jupyter/custom/custom.css
-dest_dir_nb=${HOME}/.jupyter/nbconfig/notebook.json
+dest_path_css=${HOME}/.jupyter/custom/custom.css
+dest_path_nb=${HOME}/.jupyter/nbconfig/notebook.json
 dest_dirs=${HOME}/.jupyter/nbconfig
 
 install:
