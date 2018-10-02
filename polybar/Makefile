@@ -9,6 +9,7 @@ install:
 	cd polybar; makepkg -Acs --noconfirm
 	sudo pacman -U --noconfirm polybar/polybar*.tar.xz
 	rm -rf polybar
+	install -t ${dest_path} dropbox-status.sh
 
 config: ${source_config} ${source_mappings}
 	config-parse ${source_config} ${source_mappings} > .out

@@ -15,7 +15,7 @@ setxkbmap -option 'numpad:microsoft' &
 blueman-applet &
 
 # Running Pulseaudio
-# pulseaudio -k
+volume set +0
 
 # Kill all instances of compton and polybar
 killall -q polybar compton
