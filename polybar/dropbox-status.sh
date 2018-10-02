@@ -1,19 +1,17 @@
 #!/bin/bash
 
 STATUS="$(echo `dropbox-cli status` | awk '{print $1;}')"
-echo $STATUS
 
 C_status=#fbf1c7
 DROPBOX_ICON=""
+
 if [[ $STATUS == *"Dropbox"* ]]; then
-  C_status=#fb4934
+	STATUS_COLOR=#ec644b
 elif [[ $STATUS == *"Starting"* ]]; then
-  #statements
-  ICON=
+	ICON=
+elif [[ $STATUS == *"Connecting"* ]]; then
+	ICON=
 elif [[ $STATUS == *"Syncing"* ]]; then
-  DROPBOX_ICON=
-else
-  I=1
+	DROPBOX_ICON=
 fi
-echo "%{F$C_status}$DROPBOX_ICON%{F}$ICON"
-#echo "%{A:dropbox start}$DROPBOX_ICON $ICON%{A}"
+echo "%{F${STATUS_COLOR}}${DROPBOX_ICON}%{F-} ${ICON}"
