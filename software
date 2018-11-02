@@ -13,6 +13,7 @@ software=(
 	screen
 	evince
 	poppler
+	openssh
 	nautilus
 	xorg-init
 	xdg-utils

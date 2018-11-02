@@ -2,16 +2,33 @@
 
 STATUS="$(echo `dropbox-cli status` | awk '{print $1;}')"
 
-C_status=#fbf1c7
-DROPBOX_ICON=""
+status_color_idle=#ffffff
+status_color_running=#ffffff
+dropbox_icon=
+syncing_icon=⇅
+connecting_icon=
+
+STATE=Idle
+
+ICON=""
 
 if [[ $STATUS == *"Dropbox"* ]]; then
-	STATUS_COLOR=#ec644b
+	STATE=Disconnected
 elif [[ $STATUS == *"Starting"* ]]; then
-	ICON=
+	ICON=$connecting_icon
+	STATE=Running
 elif [[ $STATUS == *"Connecting"* ]]; then
-	ICON=
+	ICON=$connecting_icon
+	STATE=Running
 elif [[ $STATUS == *"Syncing"* ]]; then
-	DROPBOX_ICON=
+	ICON=$syncing_icon
+	STATE=Running
 fi
-echo "%{F${STATUS_COLOR}}${DROPBOX_ICON}%{F-} ${ICON}"
+
+if [[ $STATE == "Idle" ]]; then
+	echo "%{F${status_color_idle}}${dropbox_icon}%{F-}"
+elif [[ $STATE == "Running" ]]; then
+	echo "%{F${status_color_running}}${dropbox_icon}%{F-} %{T2}${ICON}%{T-}"
+else
+	echo ""
+fi

@@ -14,9 +14,11 @@ install:
 	sudo pacman -U --noconfirm dmenu-extended-git/dmenu*.tar.xz
 	rm -rf dmenu-extended-git
 	sudo pacman -S --noconfirm rofi
+	sudo install -t /usr/bin/ =
 
 config:
 	mkdir -p ${dest_path_config}
 	config-parse ${source_config} ${source_mappings} > ${dest_path_config}/${dest_file_config}
 	mkdir -p ${dest_path_theme}
 	cp ${source_theme} ${dest_path_theme}/${dest_file_theme}
+	dmenu_extended_cache_build
