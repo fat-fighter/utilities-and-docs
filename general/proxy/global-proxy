@@ -41,7 +41,6 @@ if [[ $stop == false ]]; then
 	protocols=( "http" "https" "ftp" )
 
 	if [[ ${reverse} == false ]]; then
-		echo ""
 		echo "Username: $user"
 		echo -n "Password: "
 		read -s password

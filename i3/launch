@@ -29,7 +29,6 @@ if type "xrandr"; then
 	# Running for all monitors
 	for bar in $(xrandr --query | grep " connected" | cut -d" " -f1 | sed 's/-.*//g' | tr '[:upper:]' '[:lower:]'); do
 		polybar $bar &
-		sleep 5;
 	done
 else
 	polybar default &

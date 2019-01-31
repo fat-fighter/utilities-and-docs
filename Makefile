@@ -22,4 +22,5 @@ install:
 	cd general/fonts; make install
 	cd general/cursors; make install
 	cd general/gtk; make config
+	cd general/screen; make install
 	bash paths
