@@ -3,7 +3,7 @@ install:
 	sudo install -t /usr/bin/ config-parse
 	cd zsh; make install; make config
 	cd ranger; make install; make config
-	cd polybar; make install; make config
+	# cd polybar; make install; make config
 	cd i3; make install; make config
 	cd vim; make install; make config
 	cd terminology; make install; make config
