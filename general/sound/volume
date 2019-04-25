@@ -31,14 +31,14 @@ getsinkvolumesymbol() {
 	)
 	if [[ $muted == "no" ]]; then
 		if (( $1 < 20 )); then
-			echo 
+			echo L
 		elif (( $1 < 60 )); then
-			echo 
+			echo M
 		else
-			echo 
+			echo H
 		fi
 	else
-		echo 
+		echo N
 	fi
 }
 

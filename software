@@ -4,22 +4,24 @@ software=(
 	w3m
 	exa
 	feh
+	tor
 	wget
 	xorg
 	term
 	file
+	bluez
 	unzip
 	atool
 	screen
 	evince
 	poppler
 	openssh
-	nautilus
+	#nautilus
 	xorg-init
 	xdg-utils
-	highlight
 	git:light
-	mediainfo
+	#mediainfo
+	#highlight
 	xf86-video
 	pavucontrol
 	xorg-server
@@ -61,9 +63,11 @@ done
 ## Dropbox
 sudo systemctl enable dropbox@`whoami`
 
-## Chrome
-xdg-mime default ${desktop_file} x-scheme-handler/http
-xdg-mime default ${desktop_file} x-scheme-handler/https
+## Tor
+sudo systemctl enable tor.service
+
+## Browser
+xdg-settings set default-web-browser qutebrowser.desktop
 
 ## Xorg
 cat > ~/.xinitrc << EOT
