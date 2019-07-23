@@ -38,7 +38,7 @@ done
 
 if [[ $stop == false ]]; then
 
-	protocols=( "http" "https" "ftp" )
+	protocols=( "http" "https" "ftp" "socks5" )
 
 	if [[ ${reverse} == false ]]; then
 		echo "Username: $user"

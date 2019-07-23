@@ -1,0 +1,92 @@
+#!/usr/bin/env python2
+
+import sys
+import signal
+import dbus
+import dbus.service
+import dbus.mainloop.glib
+import gobject
+
+def unwrap(val):
+    # This converts a dbus object to a python object
+    if isinstance(val, dbus.ByteArray):
+        return "".join([str(x) for x in val])
+
+    if isinstance(val, (dbus.Array, list, tuple)):
+        return [unwrap(x) for x in val]
+
+    if isinstance(val, (dbus.Dictionary, dict)):
+        return dict([(unwrap(x), unwrap(y)) for x, y in val.items()])
+
+    if isinstance(val, dbus.ObjectPath):
+        if val.startswith('/org/freedesktop/NetworkManager/'):
+            classname = val.split('/')[4]
+            classname = {
+                'Settings': 'Connection',
+                'Devices': 'Device',
+            }.get(classname, classname)
+
+            return globals()[classname](val)
+
+    if isinstance(val, (dbus.Signature, dbus.String)):
+        return unicode(val)
+
+    if isinstance(val, dbus.Boolean):
+        return bool(val)
+
+    if isinstance(val, (dbus.Int16, dbus.UInt16, dbus.Int32, dbus.UInt32, dbus.Int64, dbus.UInt64)):
+        return int(val)
+
+    if isinstance(val, dbus.Byte):
+        return bytes([int(val)])
+
+    return val
+
+def device_property_changed_cb(c_interface, c_properties, c_signature, path, interface):
+    # Use this to call upon methods using dbus devices
+    # device = dbus.Interface(bus.get_object("org.bluez", path), interface)
+    # properties = device.GetAll(c_interface)
+
+    properties = unwrap(c_properties)
+
+    for key, value in properties.items():
+        print key, value
+
+    sys.stdout.flush()
+
+def shutdown(signum, frame):
+    mainloop.quit()
+
+if __name__ == "__main__":
+    # shut down on a TERM signal
+    signal.signal(signal.SIGTERM, shutdown)
+
+    # Get the system bus
+    try:
+        dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+        bus = dbus.SystemBus()
+    except Exception as ex:
+        print >> sys.stderr, "Cannot get the system dbus"
+        sys.exit(1)
+
+    # listen for signals on the Bluez bus
+    bus.add_signal_receiver(
+        device_property_changed_cb,
+        bus_name="org.bluez",
+        signal_name="PropertiesChanged",
+        dbus_interface="org.freedesktop.DBus.Properties",
+        path_keyword="path",
+        interface_keyword="interface"
+    )
+
+    # Run the dbus loop (does not work with python3 on arch)
+    try:
+        mainloop = gobject.MainLoop()
+        mainloop.run()
+    except KeyboardInterrupt:
+        pass
+    except:
+        print >> sys.stderr, "Cannot run the Gobject Loop"
+        sys.exit(1)
+
+    sys.exit(0)

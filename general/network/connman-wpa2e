@@ -1,8 +1,9 @@
 connmanctl scan wifi
 wifi=$( connmanctl services | fzf )
 
-ssid=$( echo $wifi | cut -d' ' -f2 )
-cnid=$( echo $wifi | cut -d' ' -f3 )
+echo $wifi
+ssid=$( echo $wifi | cut -d' ' -f1 )
+cnid=$( echo $wifi | cut -d' ' -f2 )
 
 echo -n "Username: "
 read uname

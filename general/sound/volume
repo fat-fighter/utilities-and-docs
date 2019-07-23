@@ -1,19 +1,18 @@
 #! /usr/bin/bash
 
 error() {
-	echo "Usage:"
-	echo "volume get";
-	echo "volume set [+|-]left-volume [right-volume]"
-	echo "volume mute"
+	echo "Usage: volume [command] [arguments]"
+	echo "Control the active sink's volume from the command line"
 	echo ""
-	echo "get  -  prints the volume of the active sink"
-	echo "set  -  sets the volume for the active sink"
-	echo "set  -  toggles mute for the active sink"
+	echo "  volume get     -  prints the volume of the active sink"
+	echo "  volume set [+|-]<left-volume> [<right-volume>]"
+	echo "                 -  sets the volume for the active sink"
+	echo "  volume mute    - toggles mute for the active sink"
 	echo ""
-	echo "Note 1: If right-volume is not specified, it is set"
-	echo "        to be the same as left-volume"
-	echo "Note 2: Specifying a sign (+|-) for volume would mean adding"
-	echo "        to the active sink's volume"
+	echo "  Note 1: If right-volume is not specified, it is set"
+	echo "          to be the same as left-volume"
+	echo "  Note 2: Specifying a sign (+|-) for volume would mean adding"
+	echo "          to the active sink's volume"
 	exit 1;
 }
 
@@ -30,7 +29,9 @@ getsinkvolumesymbol() {
 		`
 	)
 	if [[ $muted == "no" ]]; then
-		if (( $1 < 20 )); then
+		if (( $1 == 0 )); then
+			echo O
+		elif (( $1 < 30 )); then
 			echo L
 		elif (( $1 < 60 )); then
 			echo M

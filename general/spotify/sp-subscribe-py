@@ -17,7 +17,9 @@ prev_info = ""
 def on_track_play(player):
     global prev_info
 
-    track_info = 'Playing|{artist}|{title}'.format(artist=player.get_artist(), title=player.get_title())
+    track_info = 'Playing|{artist}|{title}|{album}'.format(
+        artist=player.get_artist(), title=player.get_title(), album=player.get_album()
+    )
 
     if track_info != prev_info:
         prev_info = track_info
@@ -27,7 +29,9 @@ def on_track_play(player):
 def on_track_pause(player):
     global prev_info
 
-    track_info = 'Paused|{artist}|{title}'.format(artist=player.get_artist(), title=player.get_title())
+    track_info = 'Paused|{artist}|{title}|{album}'.format(
+        artist=player.get_artist(), title=player.get_title(), album=player.get_album()
+    )
 
     if track_info != prev_info:
         prev_info = track_info

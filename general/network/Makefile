@@ -9,6 +9,8 @@ install:
 	sudo bash set-links-down.sh
 	sudo systemctl start wpa_supplicant.service
 	sudo systemctl start connman.service
+	sudo install -t /usr/bin connman-wpa2e
+	sudo install -t /usr/bin connman-monitor
 
 config:
 	sudo systemctl enable connman.service
