@@ -13,7 +13,7 @@ dest_name_theme=fatdark.vim
 dest_name_airline_theme=fatair.vim
 
 install:
-	sudo pacman -S --noconfirm gvim neovim
+	sudo pacman -S --noconfirm
 
 config:
 	mkdir -p ~/.config/nvim

@@ -1,6 +1,7 @@
 install:
 	sudo pacman -S --noconfirm pulseaudio-bluetooth blueman
 	sudo systemctl start bluetooth.service
+	sudo install -t /usr/bin bluez-monitor
 
 config:
 	cat /etc/pulse/default.pa | sed 's/\(.* module-suspend-on-idle\)/# \1/g' > temp

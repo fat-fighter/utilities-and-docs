@@ -10,6 +10,7 @@ software=(
 	term
 	file
 	bluez
+	light
 	unzip
 	atool
 	screen
@@ -23,15 +24,19 @@ software=(
 	#mediainfo
 	#highlight
 	xf86-video
+	bluez-utils
 	pavucontrol
 	xorg-server
 	git:dropbox
 	git:lazygit
 	lxappearance
 	pacman-utils
+	git:siji-git
 	arc-gtk-theme
 	gnome-screenshot
+	git:libsynaptics
 	git:google-chrome
+	git:skypeforlinux
 	xf86-input-libinput
 	git:urxvt-unicode-pixbuf
 )
