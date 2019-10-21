@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ "$1" == "pre" ]; then
+	modprobe -r i2c_hid
+fi
+if [ "$1" == "post" ]; then
+	chmod 777 /sys/class/backlight/intel_backlight/brightness
+
+	modprobe i2c_hid
+
+	awesome-client "awesome.restart()"
+fi

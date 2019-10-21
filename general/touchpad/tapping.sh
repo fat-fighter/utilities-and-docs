@@ -9,7 +9,7 @@ while getopts "vh:p:" option; do
 	esac
 done
 
-id=$( xinput list | egrep "slave.*pointer" | grep -v XTEST | sed -e 's/^.*id=//' -e 's/\s.*$//' )
+id=$( xinput list | egrep "slave.*pointer" | grep "Touchpad" | sed -e "s/^.*id=//" -e "s/\s.*$//" )
 prop=$( xinput list-props $id | grep "Tapping Enabled" | grep -v "Default" | sed "s/.*(\([0-9]*\)).*/\1/g" )
 
 if [[ $reverse == true ]]; then
