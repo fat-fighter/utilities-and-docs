@@ -50,7 +50,7 @@ def device_property_changed_cb(c_interface, c_properties, c_signature, path, int
     properties = unwrap(c_properties)
 
     for key, value in properties.items():
-        print key, value
+        print key, "=", value
 
     sys.stdout.flush()
 
