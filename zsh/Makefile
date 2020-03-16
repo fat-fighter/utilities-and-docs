@@ -11,12 +11,12 @@ dest_path_aliases=${HOME}/.zsh_aliases
 install:
 	sudo pacman -S --noconfirm zsh
 	rm -rf ~/.oh-my-zsh
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+	wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+	sh install.sh
 	rm -rf ~/.zsh/zsh-autosuggestions
 	git clone git://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 	rm -rf ~/.zsh/zsh-syntax-highlighting
 	git clone git://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
-	read -p "Do you want to make ZSH your default console (recommended)? " -n 1 r
 	sudo usermod -s `which zsh` `whoami`
 
 
