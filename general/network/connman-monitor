@@ -5,7 +5,6 @@ import dbus
 import dbus.mainloop.glib
 
 from gi.repository import GLib
-from dbus.lowlevel import MethodCallMessage, HANDLER_RESULT_NOT_YET_HANDLED
 
 
 def extract_list(list):
@@ -58,7 +57,10 @@ def property_changed(name, value, path, interface):
     val = extract(name, value)
 
     print("{%s} [%s] %s = %s" % (iface, path, name, val))
-    sys.stdout.flush()
+    try:
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
 
 
 if __name__ == "__main__":

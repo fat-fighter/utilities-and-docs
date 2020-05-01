@@ -1,92 +1,92 @@
-#!/usr/bin/env python2
+#!/usr/bin/python
 
 import sys
-import signal
 import dbus
-import dbus.service
 import dbus.mainloop.glib
-import gobject
 
-def unwrap(val):
-    # This converts a dbus object to a python object
-    if isinstance(val, dbus.ByteArray):
-        return "".join([str(x) for x in val])
+from gi.repository import GLib
 
-    if isinstance(val, (dbus.Array, list, tuple)):
-        return [unwrap(x) for x in val]
 
-    if isinstance(val, (dbus.Dictionary, dict)):
-        return dict([(unwrap(x), unwrap(y)) for x, y in val.items()])
+def dbus_to_python(data):
+    if isinstance(data, (dbus.String, dbus.ObjectPath)):
+        data = str(data)
 
-    if isinstance(val, dbus.ObjectPath):
-        if val.startswith('/org/freedesktop/NetworkManager/'):
-            classname = val.split('/')[4]
-            classname = {
-                'Settings': 'Connection',
-                'Devices': 'Device',
-            }.get(classname, classname)
+    elif isinstance(data, dbus.Boolean):
+        data = bool(data)
 
-            return globals()[classname](val)
+    elif isinstance(data, dbus.Byte):
+        data = int(data)
 
-    if isinstance(val, (dbus.Signature, dbus.String)):
-        return unicode(val)
+    elif isinstance(data, (dbus.Int16, dbus.Int64, dbus.Int32)):
+        data = int(data)
 
-    if isinstance(val, dbus.Boolean):
-        return bool(val)
+    elif isinstance(data, (dbus.UInt16, dbus.UInt32, dbus.UInt64)):
+        data = int(data)
 
-    if isinstance(val, (dbus.Int16, dbus.UInt16, dbus.Int32, dbus.UInt32, dbus.Int64, dbus.UInt64)):
-        return int(val)
+    elif isinstance(data, dbus.Double):
+        data = float(data)
 
-    if isinstance(val, dbus.Byte):
-        return bytes([int(val)])
+    elif isinstance(data, dbus.Array):
+        data = [dbus_to_python(value) for value in data]
 
-    return val
+    elif isinstance(data, dbus.Dictionary):
+        new_data = dict()
+        for key, item in data.items():
+            new_data[dbus_to_python(key)] = dbus_to_python(item)
+        data = new_data
 
-def device_property_changed_cb(c_interface, c_properties, c_signature, path, interface):
-    # Use this to call upon methods using dbus devices
-    # device = dbus.Interface(bus.get_object("org.bluez", path), interface)
-    # properties = device.GetAll(c_interface)
+    return data
 
-    properties = unwrap(c_properties)
 
-    for key, value in properties.items():
-        print key, "=", value
+def property_changed(interface, changed, invalidated, path):
+    iface = interface[interface.rfind(".") + 1 :]
+    path = str(path)
 
-    sys.stdout.flush()
+    changed = dbus_to_python(changed)
+    for name, value in changed.items():
+        print("{%s} [%s] %s = %s" % (iface, path, name, value))
 
-def shutdown(signum, frame):
-    mainloop.quit()
+    try:
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+
 
 if __name__ == "__main__":
-    # shut down on a TERM signal
-    signal.signal(signal.SIGTERM, shutdown)
+    dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-    # Get the system bus
-    try:
-        dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-        bus = dbus.SystemBus()
-    except Exception as ex:
-        print >> sys.stderr, "Cannot get the system dbus"
-        sys.exit(1)
+    bus = dbus.SystemBus()
 
-    # listen for signals on the Bluez bus
-    bus.add_signal_receiver(
-        device_property_changed_cb,
-        bus_name="org.bluez",
-        signal_name="PropertiesChanged",
-        dbus_interface="org.freedesktop.DBus.Properties",
-        path_keyword="path",
-        interface_keyword="interface"
+    manager = dbus.Interface(
+        bus.get_object("org.bluez", "/"), "org.freedesktop.DBus.ObjectManager"
     )
 
-    # Run the dbus loop (does not work with python3 on arch)
-    try:
-        mainloop = gobject.MainLoop()
-        mainloop.run()
-    except KeyboardInterrupt:
-        pass
-    except:
-        print >> sys.stderr, "Cannot run the Gobject Loop"
-        sys.exit(1)
+    objects = manager.GetManagedObjects()
 
-    sys.exit(0)
+    for path in objects.keys():
+        interfaces = objects[path]
+
+        for interface in interfaces.keys():
+            if interface in [
+                "org.freedesktop.DBus.Introspectable",
+                "org.freedesktop.DBus.Properties",
+            ]:
+                continue
+
+            properties = interfaces[interface]
+
+            if "Connected" in properties and not properties["Connected"]:
+                continue
+
+            property_changed(interface, properties, "", path)
+
+    bus.add_signal_receiver(
+        property_changed,
+        bus_name="org.bluez",
+        dbus_interface="org.freedesktop.DBus.Properties",
+        signal_name="PropertiesChanged",
+        path_keyword="path",
+    )
+
+    mainloop = GLib.MainLoop()
+    mainloop.run()

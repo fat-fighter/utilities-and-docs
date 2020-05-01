@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-import os
 import sys
 
 ascii_art_letters = """
@@ -34,6 +33,7 @@ ascii_art_letters = """
  ░░░░░░
 
 -- d
+
      ████
     ░░███
      ░███
@@ -79,8 +79,8 @@ ascii_art_letters = """
  ████
 ░░███
  ░███
- ░███
  ░███████
+ ░███░░███
  ░███░░███
  ████░░███
 ░░░░  ░░░
@@ -244,13 +244,14 @@ ascii_art_letters = """
 
 -- y
 
- ███    ███
-░░███  ███
- ░░██████
-  ░░░███
- █  ███
-░ ████
- ░░░░
+ ████    ███
+░░███   ░███
+ ░░███  ███
+  ░░██████
+   ░░░███
+  █  ███
+ ░ ████
+  ░░░░
 
 -- z
 
@@ -277,7 +278,10 @@ ascii_art_letters = """
 
  █████
 ░░░░░
-"""[1:]
+"""[
+    1:
+]
+
 
 def parse_characters(letters):
     characters = dict()
@@ -290,7 +294,6 @@ def parse_characters(letters):
             characters[current_char] = list()
         else:
             characters[current_char].append(line[:-1])
-
 
     for char in characters:
         characters[char] = characters[char][1:-1]
