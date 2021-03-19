@@ -1,4 +1,4 @@
-options='-theme fatmenu'
+options='-theme apocalypse/launcher'
 
 selected=$(\
   cat font-awesome-icons.txt \
